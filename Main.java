@@ -30,8 +30,8 @@ public class Main {
         double aspectRatio = 16.0 / 9.0;
         int width = 420;
         int height = (int) (width / aspectRatio);
-        int samplePerPixel = 10;
-        int maxDepth = 8;
+        int samplePerPixel = 100;
+        int maxDepth = 50;
 
         // World
         HittableList world = new HittableList();
@@ -43,7 +43,8 @@ public class Main {
 
         world.add(new Sphere(new Vector3(0, -100.5, -1.0), 100.0, materialGround));
         world.add(new Sphere(new Vector3(0, 0, -1.0), 0.5, materialCenter));
-        world.add(new Sphere(new Vector3(-1.0, 0, -1.0), -0.5, materialLeft));
+        world.add(new Sphere(new Vector3(-1.0, 0, -1.0), 0.5, materialLeft));
+        // world.add(new Sphere(new Vector3(-1.0, 0, -1.0), -0.4, materialLeft));
         world.add(new Sphere(new Vector3(1.0, 0, -1.0), 0.5, materialRight));
 
         // Camera

@@ -28,7 +28,7 @@ public class Main {
 
         // Image
         double aspectRatio = 16.0 / 9.0;
-        int width = 1920;
+        int width = 420;
         int height = (int) (width / aspectRatio);
         int samplePerPixel = 100;
         int maxDepth = 50;
@@ -48,9 +48,12 @@ public class Main {
         world.add(new Sphere(new Vector3(1.0, 0, -1.0), 0.5, materialRight));
 
         // Camera
-
-        Camera camera = new Camera(new Vector3(-2, 2, 1), new Vector3(0, 0, -1), new Vector3(0, 1, 0), 20.0,
-                aspectRatio);
+        Vector3 lookFrom = new Vector3(3, 3, 2);
+        Vector3 lookAt = new Vector3(0, 0, -1);
+        Vector3 vup = new Vector3(0, 1, 0);
+        double distanceToFocus = Vector3.subtraction(lookFrom, lookAt).length();
+        double aperture = 2.0;
+        Camera camera = new Camera(lookFrom, lookAt, vup, 20, aspectRatio, aperture, distanceToFocus);
 
         // Render
 

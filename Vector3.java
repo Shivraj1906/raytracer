@@ -127,6 +127,17 @@ public class Vector3 {
         return Vector3.addition(rOutPerp, rOutParallel);
     }
 
+    static Vector3 randomInUnitDisk() {
+        while (true) {
+            Vector3 p = new Vector3(Constants.randomDouble(-1, 1), Constants.randomDouble(-1, 1), 0.0);
+            if (p.lengthSquared() >= 1)
+                continue;
+
+            return p;
+
+        }
+    }
+
     /////////// -------Color util functions-----------/////////
 
     static public void writeColor(Vector3 v, int samplesPerPixel) {

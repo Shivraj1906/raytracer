@@ -1,1 +1,1 @@
-java Main.java > image.ppm && explorer.exe image.ppm
+java Main -Xms2G -Xmx5G > image.ppm && explorer.exe image.ppm

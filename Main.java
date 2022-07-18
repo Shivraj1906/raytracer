@@ -76,8 +76,8 @@ public class Main {
         double aspectRatio = 3.0 / 2;
         int width = 1200;
         int height = (int) (width / aspectRatio);
-        int samplePerPixel = 500;
-        int maxDepth = 50;
+        int samplePerPixel = 32;
+        int maxDepth = 8;
 
         // World
         HittableList world = randomScene();

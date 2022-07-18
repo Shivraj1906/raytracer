@@ -35,6 +35,7 @@ public class HittableList extends Hittable {
                 rec.normal = tempRec.normal;
                 rec.t = tempRec.t;
                 rec.material = tempRec.material;
+                rec.frontFace = tempRec.frontFace;
             }
         }
 

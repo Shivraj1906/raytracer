@@ -4,24 +4,28 @@ public class Camera {
     Vector3 horizontal;
     Vector3 vertical;
 
-    public Camera() {
-        double aspectRatio = 16.0 / 9.0;
-        double viewportHeight = 2.0;
+    public Camera(Vector3 lookFrom, Vector3 lookAt, Vector3 vup, double vfov, double aspectRatio) {
+        double theta = Constants.degreeToRadians(vfov);
+        double h = Math.tan(theta / 2);
+        double viewportHeight = 2.0 * h;
         double viewportWidth = aspectRatio * viewportHeight;
-        double focalLength = 1.0;
 
-        origin = new Vector3(0, 0, 0);
-        horizontal = new Vector3(viewportWidth, 0, 0);
-        vertical = new Vector3(0, viewportHeight, 0);
+        Vector3 w = Vector3.unitVector(Vector3.subtraction(lookFrom, lookAt));
+        Vector3 u = Vector3.unitVector(Vector3.cross(vup, w));
+        Vector3 v = Vector3.cross(w, u);
+
+        origin = lookFrom;
+        horizontal = Vector3.multiplication(viewportWidth, u);
+        vertical = Vector3.multiplication(viewportHeight, v);
         lowerLeftCorner = Vector3
                 .subtraction(Vector3.subtraction(Vector3.subtraction(origin, Vector3.division(horizontal, 2)),
-                        Vector3.division(vertical, 2)), new Vector3(0, 0, focalLength));
+                        Vector3.division(vertical, 2)), w);
     }
 
-    Ray getRay(double u, double v) {
+    Ray getRay(double s, double t) {
         return new Ray(origin,
                 Vector3.subtraction(Vector3.addition(
-                        Vector3.addition(lowerLeftCorner, Vector3.multiplication(u, horizontal)),
-                        Vector3.multiplication(v, vertical)), origin));
+                        Vector3.addition(lowerLeftCorner, Vector3.multiplication(s, horizontal)),
+                        Vector3.multiplication(t, vertical)), origin));
     }
 }

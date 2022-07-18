@@ -28,7 +28,7 @@ public class Main {
 
         // Image
         double aspectRatio = 16.0 / 9.0;
-        int width = 420;
+        int width = 1920;
         int height = (int) (width / aspectRatio);
         int samplePerPixel = 100;
         int maxDepth = 50;
@@ -37,19 +37,20 @@ public class Main {
         HittableList world = new HittableList();
 
         Lambertian materialGround = new Lambertian(new Vector3(0.8, 0.8, 0));
-        Lambertian materialCenter = new Lambertian(new Vector3(0.8, 0.8, 0.7));
+        Lambertian materialCenter = new Lambertian(new Vector3(0.1, 0.2, 0.5));
         Dielectric materialLeft = new Dielectric(1.5);
         Metal materialRight = new Metal(new Vector3(0.8, 0.6, 0.2), 0.0);
 
-        world.add(new Sphere(new Vector3(0, -100.5, -1.0), 100.0, materialGround));
-        world.add(new Sphere(new Vector3(0, 0, -1.0), 0.5, materialCenter));
+        world.add(new Sphere(new Vector3(0, -100.5, -1.0), 100, materialGround));
+        world.add(new Sphere(new Vector3(0, 0., -1.0), 0.5, materialCenter));
         world.add(new Sphere(new Vector3(-1.0, 0, -1.0), 0.5, materialLeft));
-        // world.add(new Sphere(new Vector3(-1.0, 0, -1.0), -0.4, materialLeft));
+        world.add(new Sphere(new Vector3(-1.0, 0, -1.0), -0.45, materialLeft));
         world.add(new Sphere(new Vector3(1.0, 0, -1.0), 0.5, materialRight));
 
         // Camera
 
-        Camera camera = new Camera();
+        Camera camera = new Camera(new Vector3(-2, 2, 1), new Vector3(0, 0, -1), new Vector3(0, 1, 0), 20.0,
+                aspectRatio);
 
         // Render
 

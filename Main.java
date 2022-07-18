@@ -2,6 +2,52 @@ import java.util.Timer;
 
 public class Main {
 
+    static HittableList randomScene() {
+        HittableList world = new HittableList();
+
+        Lambertian groundMaterial = new Lambertian(new Vector3(0.5, 0.5, 0.5));
+        world.add(new Sphere(new Vector3(0, -1000, 0), 1000, groundMaterial));
+
+        for (int a = -11; a < 11; a++) {
+            for (int b = -11; b < 11; b++) {
+                double chooseMaterial = Constants.randomDouble();
+
+                Vector3 center = new Vector3(a + 0.9 * Constants.randomDouble(), 0.2,
+                        b + 0.9 * Constants.randomDouble());
+
+                if ((Vector3.subtraction(center, new Vector3(4, 0.2, 0)).length()) > 0.9) {
+                    Material sphereMaterial;
+
+                    if (chooseMaterial < 0.8) {
+                        // diffuse
+                        Vector3 albedo = Vector3.multiplication(Vector3.random(), Vector3.random());
+                        sphereMaterial = new Lambertian(albedo);
+                    } else if (chooseMaterial < 0.95) {
+                        // metal
+                        Vector3 albedo = Vector3.random(0.5, 1);
+                        double fuzz = Constants.randomDouble(0, 0.5);
+                        sphereMaterial = new Metal(albedo, fuzz);
+                    } else {
+                        // glass
+                        sphereMaterial = new Dielectric(1.5);
+                    }
+                    world.add(new Sphere(center, 0.2, sphereMaterial));
+                }
+            }
+        }
+
+        Dielectric material1 = new Dielectric(1.5);
+        world.add(new Sphere(new Vector3(0, 1, 0), 1.0, material1));
+
+        Lambertian material2 = new Lambertian(new Vector3(0.4, 0.2, 0.1));
+        world.add(new Sphere(new Vector3(-4, 1, 0), 1.0, material2));
+
+        Metal material3 = new Metal(new Vector3(0.7, 0.6, 0.5), 0.0);
+        world.add(new Sphere(new Vector3(4, 1, 0), 1.0, material3));
+
+        return world;
+    }
+
     static Vector3 rayColor(Ray r, Hittable world, int depth) {
         HitRecord rec = new HitRecord();
 
@@ -27,32 +73,21 @@ public class Main {
     public static void main(String[] args) {
 
         // Image
-        double aspectRatio = 16.0 / 9.0;
-        int width = 420;
+        double aspectRatio = 3.0 / 2;
+        int width = 1200;
         int height = (int) (width / aspectRatio);
-        int samplePerPixel = 100;
+        int samplePerPixel = 500;
         int maxDepth = 50;
 
         // World
-        HittableList world = new HittableList();
-
-        Lambertian materialGround = new Lambertian(new Vector3(0.8, 0.8, 0));
-        Lambertian materialCenter = new Lambertian(new Vector3(0.1, 0.2, 0.5));
-        Dielectric materialLeft = new Dielectric(1.5);
-        Metal materialRight = new Metal(new Vector3(0.8, 0.6, 0.2), 0.0);
-
-        world.add(new Sphere(new Vector3(0, -100.5, -1.0), 100, materialGround));
-        world.add(new Sphere(new Vector3(0, 0., -1.0), 0.5, materialCenter));
-        world.add(new Sphere(new Vector3(-1.0, 0, -1.0), 0.5, materialLeft));
-        world.add(new Sphere(new Vector3(-1.0, 0, -1.0), -0.45, materialLeft));
-        world.add(new Sphere(new Vector3(1.0, 0, -1.0), 0.5, materialRight));
+        HittableList world = randomScene();
 
         // Camera
-        Vector3 lookFrom = new Vector3(3, 3, 2);
-        Vector3 lookAt = new Vector3(0, 0, -1);
+        Vector3 lookFrom = new Vector3(13, 2, 3);
+        Vector3 lookAt = new Vector3(0, 0, 0);
         Vector3 vup = new Vector3(0, 1, 0);
-        double distanceToFocus = Vector3.subtraction(lookFrom, lookAt).length();
-        double aperture = 2.0;
+        double distanceToFocus = 10.0;
+        double aperture = 0.1;
         Camera camera = new Camera(lookFrom, lookAt, vup, 20, aspectRatio, aperture, distanceToFocus);
 
         // Render

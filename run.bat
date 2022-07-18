@@ -1,0 +1,1 @@
+java Main.java > image.ppm && explorer.exe image.ppm

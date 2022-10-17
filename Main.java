@@ -61,7 +61,6 @@ public class Main {
             if (rec.material.scatter(r, rec, attenuation, scattered)) {
                 return Vector3.multiplication(attenuation, rayColor(scattered, world, depth - 1));
             }
-
             return new Vector3(0, 0, 0);
         }
         Vector3 unitDirection = Vector3.unitVector(r.getDirection());
